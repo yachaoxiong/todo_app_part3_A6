@@ -4,11 +4,12 @@
 //
 //  App Name: todo list
 //  Course : MAPD714
-//  Author : Yachao Xiong 301298033, Mingyuan Xie
+//  Author : Yachao Xiong 301298033, Mingyuan Xie 301275467
 //
 //
-//  App Revision History 
+//  App Revision History
 //  V1.0 init app and add basic UI              -  2022-11-13
+//  V1.1 added details list page UI             -  2022-11-13
 //
 //  About the App
 //  This app is to create tasks for the todo list.
