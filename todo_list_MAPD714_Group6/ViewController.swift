@@ -9,7 +9,7 @@
 //
 //  App Revision History
 //  V1.0 init app and add basic UI              -  2022-11-13
-//  V1.1 added details list page UI             -  2022-11-13
+//  V1.1 added details  page UI                 -  2022-11-13
 //
 //  About the App
 //  This app is to create tasks for the todo list.
@@ -23,8 +23,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     @IBOutlet weak var listTable: UITableView!
     let todolist=[
-        ["title":"Buy Food","details":"some details...","hasDueDate":true,"isFinished":false,"dueDate":"2022-11-22"],
-        ["title":"Another Task","details2":"some details...2","hasDueDate":true,"isFinished":false,"dueDate":"2022-11-22"]
+        ["title":"Buy Food","details":"some details...","hasDueDate":true,"isFinished":false ,"dueDate":"2022-11-22"],
+        ["title":"Another Task","details2":"some details...2","hasDueDate":true,"isFinished":true,"dueDate":"2022-11-22"]
     ]
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,14 +42,21 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let list =  todolist[indexPath.row]
         let cell =  listTable.dequeueReusableCell(withIdentifier: "cell",for:indexPath) as? todolistViewCell
+        
         cell!.title.text = list["title"] as? String
         cell!.status.text = list["dueDate"] as? String
-        
-        
-        cell!.isFinished.setOn(false, animated: true)
        
-        cell!.editBtn.addTarget(self, action: #selector(detailsScreen), for: .touchUpInside)
         
+        cell!.isFinished.setOn(list["isFinished"] as? Bool ?? false, animated: true)
+        cell!.isFinished.tag = indexPath.row
+        
+        if list["isFinished"] as! Bool {
+            cell!.title.textColor = UIColor.systemGray5
+            cell!.status.text = "Completed"
+        }
+        
+        cell!.editBtn.addTarget(self, action: #selector(detailsScreen), for: .touchUpInside)
+        cell!.isFinished.addTarget(self, action: #selector(updateTitle), for: .touchUpInside)
         return cell!
     }
     
@@ -59,7 +66,20 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let controller = story.instantiateViewController(identifier: "detailsScreen") as! DetailsViewController
         self.present(controller, animated: true,completion: nil)
     }
-
+    
+     @objc func updateTitle(_ sender:UISwitch!){
+            let indexPath = NSIndexPath(row: sender.tag, section: 0)
+     
+            let cell = listTable.cellForRow(at: indexPath as IndexPath) as! todolistViewCell
+            if sender.isOn{
+                cell.title.textColor = UIColor.systemGray5
+                cell.status.text = "Completed"
+            }else{
+                cell.title.textColor = UIColor.black
+                cell.status.text = todolist[sender.tag]["dueDate"] as! String
+            }
+    }
+    
     
 }
 

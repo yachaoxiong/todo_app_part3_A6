@@ -8,7 +8,7 @@
 //
 //  App Revision History
 //  V1.0 init app and add basic UI              -  2022-11-13
-//  V1.1 added details list page UI             -  2022-11-13
+//  V1.1 added details  page UI                 -  2022-11-13
 //
 //  About the App
 //  This app is to create tasks for the todo list.
