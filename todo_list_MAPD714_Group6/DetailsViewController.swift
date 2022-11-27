@@ -5,13 +5,23 @@
 //  Course : MAPD714
 //  Author : Yachao Xiong 301298033, Mingyuan Xie 301275467
 //
+//  App Name: todo list
+//  Course : MAPD714
+//  Author : Yachao Xiong 301298033, Mingyuan Xie 301275467
+//
 //
 //  App Revision History
 //  V1.0 init app and add basic UI              -  2022-11-13
 //  V1.1 added details  page UI                 -  2022-11-13
 //
+//  App Revision History part 2
+//  V2.0 added edit function and btns function       -  2022-11-27
+//  V2.1 fixed errors and update table btn function  -  2022-11-27
+//  v2.2 added revision history                      -  2022-11-27
+//
 //  About the App
 //  This app is to create tasks for the todo list.
+//
 //
 //  Created by Yachao on 2022-11-13.
 //
@@ -27,6 +37,7 @@ class DetailsViewController:
     @IBOutlet weak var cancelBtn: UIButton!
     @IBOutlet weak var pageTitle: UILabel!
     @IBOutlet weak var textField_details: UITextField!
+    @IBOutlet weak var completeLabel: UILabel!
     @IBOutlet weak var switch_hasDueDate: UISwitch!
     @IBOutlet weak var datePicker_picakDate: UIDatePicker!
     @IBOutlet weak var datePickerView: UIStackView!
@@ -40,14 +51,21 @@ class DetailsViewController:
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        initDetails()
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
-    
+    // init data for editing or creating
     func initDetails(){
          arr =  UserDefaults.standard.object(forKey: "arrayTodoList") as? [[String:String]] ?? [[String:String]]()
         if(self.navigationItem.title == "New Todo"){
-            updateBtn.setTitle("Create", for: .normal)
+            self.textView_name.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+            
             deleteBtn.isHidden = true
+            updateBtn.isHidden = true
+            cancelBtn.isHidden = true
+            switch_hasDueDate.isHidden = true
+            switch_isCompleted.isHidden = true
+            completeLabel.isHidden = true
         }else{
             let selectedItem = arr[selectedTodo]
             textView_name.text = selectedItem["title"]
@@ -67,8 +85,14 @@ class DetailsViewController:
         }
        
     }
-    
-    
+   // show btns when users enter the title of todo item
+    @objc private func textFieldDidChange(_ textField: UITextField) {
+        updateBtn.setTitle("Create", for: .normal)
+        updateBtn.isHidden = false
+        cancelBtn.isHidden = false
+        switch_hasDueDate.isHidden = false
+    }
+    // hide or show datePicker
     @IBAction func button_dueDate_pressed(_ sender: UISwitch!) {
         if sender.isOn{
             datePicker_picakDate.isHidden = false
@@ -77,7 +101,7 @@ class DetailsViewController:
             datePicker_picakDate.isHidden = true
         }
     }
-    
+    // update or create a new todo item
     @IBAction func button_update_pressed(_ sender: UIButton) {
         
         if(self.navigationItem.title == "New Todo"){
@@ -103,7 +127,7 @@ class DetailsViewController:
         
         }
     }
-    
+    // delete function
     @IBAction func button_delete_pressed(_ sender: UIButton) {
         let alert = UIAlertController(title: "Delete Todo", message: "Are you sure to delete it?", preferredStyle: UIAlertController.Style.alert)
         
@@ -121,12 +145,10 @@ class DetailsViewController:
         
         self.present(alert,animated: true,completion: nil)
     }
-    
+    // cancel function
     @IBAction func button_cancel_pressed(_ sender: UIButton) {
         if(self.navigationItem.title == "New Todo"){
-            
-         
-            
+         goBack()
         }else{
             let showAlert =  cancelUpdate()
              print(showAlert)
@@ -150,24 +172,19 @@ class DetailsViewController:
              }else{
                  goBack()
              }
-//            textView_name.text = ""
-//            textField_details.text = ""
-//            switch_hasDueDate.setOn(false, animated: true)
-//            let now: NSDate! = NSDate()
-//            datePicker_picakDate.setDate(now as Date, animated: true)
-//            switch_isCompleted.setOn(false, animated: true)
         }
       
     }
+    // back to home screen
     func goBack()  {
       self.dismiss(animated: true, completion: nil)
     }
-    
+    // remove item from todo list
     func deleteItem(){
         arr.remove(at: selectedTodo)
         UserDefaults.standard.set(arr,forKey:"arrayTodoList")
     }
-    
+    // create a new todo or update it
     func createOrUpdate() {
             let text_name = textView_name.text ?? ""
             let text_details = textField_details.text ?? ""
@@ -195,7 +212,7 @@ class DetailsViewController:
             UserDefaults.standard.set(arr,forKey:"arrayTodoList")
         }
     }
-    
+    // cancel update 
     func cancelUpdate()-> Bool{
         let text_name = textView_name.text ?? ""
         let text_details = textField_details.text ?? ""

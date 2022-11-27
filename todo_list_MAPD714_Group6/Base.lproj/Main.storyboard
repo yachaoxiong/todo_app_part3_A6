@@ -179,7 +179,7 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="Hda-0W-xHQ">
                                                         <rect key="frame" x="0.0" y="81.333333333333329" width="310" height="191.66666666666669"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YIE-qv-Mz1">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YIE-qv-Mz1">
                                                                 <rect key="frame" x="0.0" y="0.0" width="310" height="71.666666666666671"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
@@ -326,6 +326,7 @@
                     </view>
                     <connections>
                         <outlet property="cancelBtn" destination="FhZ-hm-71b" id="4ph-KV-oYs"/>
+                        <outlet property="completeLabel" destination="unb-fI-yWi" id="W7m-o9-3pz"/>
                         <outlet property="datePickerView" destination="7a1-d5-lH2" id="d9z-kd-b3p"/>
                         <outlet property="datePicker_picakDate" destination="PBa-yA-h4j" id="o6Q-hJ-azu"/>
                         <outlet property="deleteBtn" destination="Uc1-91-jjd" id="MsU-XS-sSE"/>

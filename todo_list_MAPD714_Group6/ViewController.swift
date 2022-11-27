@@ -11,6 +11,11 @@
 //  V1.0 init app and add basic UI              -  2022-11-13
 //  V1.1 added details  page UI                 -  2022-11-13
 //
+//  App Revision History part 2
+//  V2.0 added edit function and btns function       -  2022-11-27
+//  V2.1 fixed errors and update table btn function  -  2022-11-27
+//  v2.2 added revision history                      -  2022-11-27
+//
 //  About the App
 //  This app is to create tasks for the todo list.
 //
@@ -33,21 +38,17 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print("start new data")
         initData()
         listTable.dataSource = self
         listTable.delegate = self
         listTable.reloadData()
     }
-    
+    // init data
     func initData(){
         todolist = UserDefaults.standard.object(forKey: "arrayTodoList") as? [[String:String]] ?? [[String:String]]()
-        print("todolist")
-        print(todolist)
     }
     // table rows
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    
         return todolist.count
     }
  
@@ -57,24 +58,49 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let cell =  listTable.dequeueReusableCell(withIdentifier: "cell",for:indexPath) as? todolistViewCell
         
         cell!.title.text = list["title"]
-        cell!.status.text = list["dueDate"]
+       
        
         
         let isFinished = list["isFinished"] == "true" ? true : false
-        cell!.isFinished.setOn(isFinished, animated: true)
+      
+       
         cell!.isFinished.tag = indexPath.row
         cell?.editBtn.tag = indexPath.row
         
+        let hasDueDate = list["hasDueDate"] == "true" ? true : false
+        if(hasDueDate){
+            cell?.isFinished.setOn(true, animated: true)
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+            let dueDate = dateFormatter.date(from: list["dueDate"] ?? "")!
+            
+            let currentDate = Date()
+            
+            if(dueDate < currentDate ){
+               cell!.status.text = list["dueDate"]
+            }else{
+               cell!.status.text = "OverDue"
+               cell!.status.textColor = UIColor.red
+            }
+        }else{
+            cell!.status.text = " "
+        }
+        
         if isFinished {
+            cell!.isFinished.setOn(true, animated: true)
             cell!.title.textColor = UIColor.systemGray5
             cell!.status.text = "Completed"
+        }else{
+            cell!.isFinished.setOn(false, animated: true)
+            cell!.title.textColor = UIColor.black
         }
+        
         
         cell!.editBtn.addTarget(self, action: #selector(detailsScreen(sender:)), for: .touchUpInside)
         cell!.isFinished.addTarget(self, action: #selector(updateTitle), for: .touchUpInside)
         return cell!
     }
-    
+    // start a new screen
     @objc func detailsScreen(sender: UIButton){
         
         let vc = storyboard?.instantiateViewController(identifier: "detailsScreen") as! DetailsViewController
@@ -83,7 +109,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         vc.selectedTodo = sender.tag 
         present(nc, animated: true,completion: nil)
     }
-    
+    // update the todo item status
      @objc func updateTitle(_ sender:UISwitch!){
 
          let indexPath = NSIndexPath(row: sender.tag, section: 0)
@@ -94,11 +120,33 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
              cell.status.text = "Completed"
          }else{
              cell.title.textColor = UIColor.black
-             cell.status.text = todolist[sender.tag]["dueDate"] 
+             let hasDueDate = todolist[sender.tag]["hasDueDate"] == "true" ? true : false
+             
+             if(hasDueDate){
+                 let dateFormatter = DateFormatter()
+                 dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+                 let dueDate = dateFormatter.date(from: todolist[sender.tag]["dueDate"] ?? "")!
+
+                 let currentDate = Date()
+
+                 if(dueDate < currentDate ){
+                    cell.status.text =  todolist[sender.tag]["dueDate"]
+                 }else{
+                    cell.status.text = "OverDue"
+                    cell.status.textColor = UIColor.red
+                 }
+             }else{
+                 cell.status.text = " "
+             }
          }
+         
+         
+         let hasDueDate = sender.isOn ? "true" : "false"
+         todolist[sender.tag]["isFinished"] = hasDueDate
+         UserDefaults.standard.set(todolist,forKey:"arrayTodoList")
     }
     
-    
+    // start the new screen to add new todo item
     @IBAction func button_addItem_Pressed(_ sender: UIButton) {
         let vc = storyboard?.instantiateViewController(identifier: "detailsScreen") as! DetailsViewController
         vc.title = "New Todo"

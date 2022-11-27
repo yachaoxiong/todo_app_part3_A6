@@ -18,7 +18,7 @@
 
 
 import UIKit
-
+// table item 
 class todolistViewCell: UITableViewCell {
 
     @IBOutlet weak var title: UILabel!
