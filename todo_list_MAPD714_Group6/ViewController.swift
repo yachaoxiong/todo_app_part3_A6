@@ -22,19 +22,32 @@ import UIKit
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var listTable: UITableView!
-    let todolist=[
-        ["title":"Buy Food","details":"some details...","hasDueDate":true,"isFinished":false ,"dueDate":"2022-11-22"],
-        ["title":"Another Task","details2":"some details...2","hasDueDate":true,"isFinished":true,"dueDate":"2022-11-22"]
-    ]
+    var todolist = [[String:String]]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        initData()
         listTable.dataSource = self
         listTable.delegate = self
     }
-
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        print("start new data")
+        initData()
+        listTable.dataSource = self
+        listTable.delegate = self
+        listTable.reloadData()
+    }
+    
+    func initData(){
+        todolist = UserDefaults.standard.object(forKey: "arrayTodoList") as? [[String:String]] ?? [[String:String]]()
+        print("todolist")
+        print(todolist)
+    }
     // table rows
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
         return todolist.count
     }
  
@@ -43,43 +56,56 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let list =  todolist[indexPath.row]
         let cell =  listTable.dequeueReusableCell(withIdentifier: "cell",for:indexPath) as? todolistViewCell
         
-        cell!.title.text = list["title"] as? String
-        cell!.status.text = list["dueDate"] as? String
+        cell!.title.text = list["title"]
+        cell!.status.text = list["dueDate"]
        
         
-        cell!.isFinished.setOn(list["isFinished"] as? Bool ?? false, animated: true)
+        let isFinished = list["isFinished"] == "true" ? true : false
+        cell!.isFinished.setOn(isFinished, animated: true)
         cell!.isFinished.tag = indexPath.row
+        cell?.editBtn.tag = indexPath.row
         
-        if list["isFinished"] as! Bool {
+        if isFinished {
             cell!.title.textColor = UIColor.systemGray5
             cell!.status.text = "Completed"
         }
         
-        cell!.editBtn.addTarget(self, action: #selector(detailsScreen), for: .touchUpInside)
+        cell!.editBtn.addTarget(self, action: #selector(detailsScreen(sender:)), for: .touchUpInside)
         cell!.isFinished.addTarget(self, action: #selector(updateTitle), for: .touchUpInside)
         return cell!
     }
     
-    @objc func detailsScreen(){
-        print("start new screen")
-        let story = UIStoryboard(name: "Main", bundle: nil)
-        let controller = story.instantiateViewController(identifier: "detailsScreen") as! DetailsViewController
-        self.present(controller, animated: true,completion: nil)
+    @objc func detailsScreen(sender: UIButton){
+        
+        let vc = storyboard?.instantiateViewController(identifier: "detailsScreen") as! DetailsViewController
+        let nc = UINavigationController(rootViewController: vc)
+        vc.title = "Todo Details"
+        vc.selectedTodo = sender.tag 
+        present(nc, animated: true,completion: nil)
     }
     
      @objc func updateTitle(_ sender:UISwitch!){
-            let indexPath = NSIndexPath(row: sender.tag, section: 0)
+
+         let indexPath = NSIndexPath(row: sender.tag, section: 0)
      
-            let cell = listTable.cellForRow(at: indexPath as IndexPath) as! todolistViewCell
-            if sender.isOn{
-                cell.title.textColor = UIColor.systemGray5
-                cell.status.text = "Completed"
-            }else{
-                cell.title.textColor = UIColor.black
-                cell.status.text = todolist[sender.tag]["dueDate"] as! String
-            }
+         let cell = listTable.cellForRow(at: indexPath as IndexPath) as! todolistViewCell
+         if sender.isOn{
+             cell.title.textColor = UIColor.systemGray5
+             cell.status.text = "Completed"
+         }else{
+             cell.title.textColor = UIColor.black
+             cell.status.text = todolist[sender.tag]["dueDate"] 
+         }
     }
     
     
+    @IBAction func button_addItem_Pressed(_ sender: UIButton) {
+        let vc = storyboard?.instantiateViewController(identifier: "detailsScreen") as! DetailsViewController
+        vc.title = "New Todo"
+    
+        present(vc,animated: true)
+    }
+    
 }
+
 
