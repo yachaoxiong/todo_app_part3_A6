@@ -225,16 +225,22 @@ class DetailsViewController:
         if(arr[selectedTodo]["title"] != text_name || arr[selectedTodo]["details"] != text_details || arr[selectedTodo]["hasDueDate"] != switch_hasDueDate || arr[selectedTodo]["isFinished"] != switch_isCompleted) {
             return true
         }else{
-            if(arr[selectedTodo]["hasDueDate"] == switch_hasDueDate){
-                print("due date is diff")
-                
+            if(arr[selectedTodo]["hasDueDate"] == "true"){
                 if(datePicker_dueDate != arr[selectedTodo]["dueDate"]){
+                    print(datePicker_dueDate)
+                    print(arr[selectedTodo]["dueDate"])
+                    print("due date is diff")
                     return true
+                }else{
+                    return false
                 }
-                return false
+              
             }else{
                 return false
             }
         }
     }
 }
+
+
+

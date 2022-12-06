@@ -31,6 +31,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.modalPresentationStyle = .fullScreen
         initData()
         listTable.dataSource = self
         listTable.delegate = self
@@ -64,20 +65,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let isFinished = list["isFinished"] == "true" ? true : false
       
        
-        cell!.isFinished.tag = indexPath.row
-        cell?.editBtn.tag = indexPath.row
         
         let hasDueDate = list["hasDueDate"] == "true" ? true : false
         if(hasDueDate){
-            cell?.isFinished.setOn(true, animated: true)
+
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
             let dueDate = dateFormatter.date(from: list["dueDate"] ?? "")!
             
             let currentDate = Date()
             
-            if(dueDate < currentDate ){
+            if(dueDate > currentDate ){
                cell!.status.text = list["dueDate"]
+                
             }else{
                cell!.status.text = "OverDue"
                cell!.status.textColor = UIColor.red
@@ -87,17 +87,17 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         if isFinished {
-            cell!.isFinished.setOn(true, animated: true)
+           
             cell!.title.textColor = UIColor.systemGray5
             cell!.status.text = "Completed"
+            cell!.status.textColor = UIColor.black
         }else{
-            cell!.isFinished.setOn(false, animated: true)
+           
             cell!.title.textColor = UIColor.black
         }
         
         
-        cell!.editBtn.addTarget(self, action: #selector(detailsScreen(sender:)), for: .touchUpInside)
-        cell!.isFinished.addTarget(self, action: #selector(updateTitle), for: .touchUpInside)
+ 
         return cell!
     }
     // start a new screen
@@ -107,7 +107,17 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let nc = UINavigationController(rootViewController: vc)
         vc.title = "Todo Details"
         vc.selectedTodo = sender.tag 
-        present(nc, animated: true,completion: nil)
+       
+        let transition = CATransition()
+        transition.duration = 0.5
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromLeft
+        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
+        view.window!.layer.add(transition, forKey: kCATransition)
+        
+        present(nc, animated: false)
+        
+
     }
     // update the todo item status
      @objc func updateTitle(_ sender:UISwitch!){
@@ -118,6 +128,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
          if sender.isOn{
              cell.title.textColor = UIColor.systemGray5
              cell.status.text = "Completed"
+             cell.status.textColor =  UIColor.black
+           
          }else{
              cell.title.textColor = UIColor.black
              let hasDueDate = todolist[sender.tag]["hasDueDate"] == "true" ? true : false
@@ -130,10 +142,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                  let currentDate = Date()
 
                  if(dueDate < currentDate ){
-                    cell.status.text =  todolist[sender.tag]["dueDate"]
+                     cell.status.text = "OverDue"
+                     cell.status.textColor = UIColor.red
                  }else{
-                    cell.status.text = "OverDue"
-                    cell.status.textColor = UIColor.red
+                     cell.status.text =  todolist[sender.tag]["dueDate"]
+                     
                  }
              }else{
                  cell.status.text = " "

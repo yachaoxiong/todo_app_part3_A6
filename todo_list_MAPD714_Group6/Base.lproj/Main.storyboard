@@ -13,7 +13,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="todoList" id="BYZ-38-t0r" customClass="ViewController" customModule="todo_list_MAPD714_Group6" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="todoList" modalPresentationStyle="fullScreen" id="BYZ-38-t0r" customClass="ViewController" customModule="todo_list_MAPD714_Group6" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -39,7 +39,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sjz-U9-NgE">
-                                                    <rect key="frame" x="29" y="19" width="182" height="21"/>
+                                                    <rect key="frame" x="29" y="19" width="47" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="KyN-im-hxw"/>
                                                     </constraints>
@@ -48,41 +48,19 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ny-dQ-94g">
-                                                    <rect key="frame" x="29" y="48" width="192" height="21"/>
+                                                    <rect key="frame" x="29" y="48" width="26.333333333333329" height="21"/>
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pJO-wH-6OU">
-                                                    <rect key="frame" x="221" y="25" width="51" height="43"/>
-                                                    <color key="tintColor" red="0.47843140360000003" green="0.11372549830000001" blue="0.2117646933" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                    <color key="onTintColor" red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </switch>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3JB-vZ-SOY">
-                                                    <rect key="frame" x="273" y="25" width="47" height="43"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="47" id="i6h-bm-afR"/>
-                                                    </constraints>
-                                                    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="plain" image="square.and.pencil" catalog="system" title=""/>
-                                                </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="pJO-wH-6OU" secondAttribute="trailing" constant="60" id="4hh-Jo-LmJ"/>
                                                 <constraint firstItem="sjz-U9-NgE" firstAttribute="top" secondItem="UHF-a9-Jq6" secondAttribute="top" constant="19" id="6w5-E1-nxk"/>
                                                 <constraint firstItem="8ny-dQ-94g" firstAttribute="top" secondItem="sjz-U9-NgE" secondAttribute="bottom" constant="8" symbolic="YES" id="8mc-UB-5DH"/>
-                                                <constraint firstItem="3JB-vZ-SOY" firstAttribute="centerY" secondItem="pJO-wH-6OU" secondAttribute="centerY" id="B4t-wt-fyj"/>
-                                                <constraint firstItem="pJO-wH-6OU" firstAttribute="leading" secondItem="sjz-U9-NgE" secondAttribute="trailing" constant="10" id="DfQ-7C-KqL"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="3JB-vZ-SOY" secondAttribute="bottom" constant="10" id="WOy-wu-b72"/>
                                                 <constraint firstItem="sjz-U9-NgE" firstAttribute="leading" secondItem="UHF-a9-Jq6" secondAttribute="leading" constant="29" id="Zbm-t5-di0"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="3JB-vZ-SOY" secondAttribute="trailing" constant="10" id="cPH-Gn-4xV"/>
                                                 <constraint firstAttribute="bottom" secondItem="8ny-dQ-94g" secondAttribute="bottom" constant="20" symbolic="YES" id="guS-Jl-Iqv"/>
                                                 <constraint firstItem="8ny-dQ-94g" firstAttribute="leading" secondItem="UHF-a9-Jq6" secondAttribute="leading" constant="29" id="le6-Iw-CAx"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="pJO-wH-6OU" secondAttribute="bottom" constant="10" id="rne-sC-4Z3"/>
-                                                <constraint firstItem="pJO-wH-6OU" firstAttribute="leading" secondItem="8ny-dQ-94g" secondAttribute="trailing" id="woW-Si-0bq"/>
-                                                <constraint firstItem="3JB-vZ-SOY" firstAttribute="top" secondItem="UHF-a9-Jq6" secondAttribute="topMargin" constant="14" id="zEz-yJ-ZVd"/>
                                             </constraints>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -91,8 +69,6 @@
                                             </userDefinedRuntimeAttributes>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="editBtn" destination="3JB-vZ-SOY" id="R5w-at-jgy"/>
-                                            <outlet property="isFinished" destination="pJO-wH-6OU" id="30X-RJ-Fh0"/>
                                             <outlet property="status" destination="8ny-dQ-94g" id="X0q-ej-b3m"/>
                                             <outlet property="title" destination="sjz-U9-NgE" id="zqN-Xp-nF1"/>
                                         </connections>
@@ -345,7 +321,6 @@
     </scenes>
     <resources>
         <image name="plus.circle.fill" catalog="system" width="128" height="123"/>
-        <image name="square.and.pencil" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
